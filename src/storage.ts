@@ -1,0 +1,4 @@
+import type {Journal} from './types';
+const db=()=>new Promise<IDBDatabase>((resolve,reject)=>{const r=indexedDB.open('papero',1);r.onupgradeneeded=()=>r.result.createObjectStore('journals',{keyPath:'id'});r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(r.error);});
+export async function saveJournal(j:Journal){const d=await db();return new Promise<void>((resolve,reject)=>{const tx=d.transaction('journals','readwrite');tx.objectStore('journals').put(j);tx.oncomplete=()=>{d.close();resolve();};tx.onerror=()=>{d.close();reject(tx.error);};});}
+export async function listJournals(){const d=await db();return new Promise<Journal[]>((resolve,reject)=>{const tx=d.transaction('journals'),r=tx.objectStore('journals').getAll();r.onsuccess=()=>resolve((r.result as Journal[]).sort((a,b)=>b.updated-a.updated));r.onerror=()=>reject(r.error);tx.oncomplete=()=>d.close();});}

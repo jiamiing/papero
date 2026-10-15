@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Papero</string>
+    <string name="title_activity_main">Papero</string>
+    <string name="package_name">studio.papero.app</string>
+    <string name="custom_url_scheme">studio.papero.app</string>
+</resources>
