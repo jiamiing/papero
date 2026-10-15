@@ -1,0 +1,6 @@
+/** Work at a bounded resolution so selection latency stays independent of upload size. */
+export function selectionSize(width:number,height:number,max=900){const ratio=Math.min(1,max/Math.max(width,height));return{width:Math.max(1,Math.round(width*ratio)),height:Math.max(1,Math.round(height*ratio))};}
+export function imagePoint(clientX:number,clientY:number,rect:{left:number;top:number;width:number;height:number},width:number,height:number){return{x:Math.max(0,Math.min(width-1,(clientX-rect.left)/rect.width*width)),y:Math.max(0,Math.min(height-1,(clientY-rect.top)/rect.height*height))};}
+export function currentSelection(result:{requestId:number;imageId:string},current:{requestId:number;imageId:string}){return result.requestId===current.requestId&&result.imageId===current.imageId;}
+/** Boundary segments are drawn together as one dashed path instead of one DOM node per pixel. */
+export function outlinePath(mask:Uint8Array,w:number,h:number){let path='';for(let y=0;y<h;y++)for(let x=0;x<w;x++){const p=y*w+x;if(!mask[p])continue;if(y===0||!mask[p-w])path+=`M${x} ${y}h1`;if(y===h-1||!mask[p+w])path+=`M${x} ${y+1}h1`;if(x===0||!mask[p-1])path+=`M${x} ${y}v1`;if(x===w-1||!mask[p+1])path+=`M${x+1} ${y}v1`;}return path;}

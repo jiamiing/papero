@@ -1,0 +1,4 @@
+import {test} from 'node:test';import assert from 'node:assert/strict';import type {Layer} from '../src/types';import {replaceRegionLayer} from '../src/layers';
+const layer=(id:string,kind:Layer['kind']):Layer=>({id,name:id,kind,x:0,y:0,scale:1,rotation:0,opacity:1,depth:0,visible:true});
+test('photo recoloring never covers the existing title or sticker',()=>{const before=[layer('old-color','fill'),layer('title','text'),layer('sticker','sticker')];assert.deepEqual(replaceRegionLayer(before,layer('new-color','fill'),null).map(l=>l.id),['old-color','new-color','title','sticker']);assert.equal(before.length,3);});
+test('trying another color edits the same fill layer without growing the stack',()=>{const before=[layer('color','fill'),layer('title','text')],changed={...before[0],color:'#ff4e9c'};const after=replaceRegionLayer(before,changed,'color');assert.equal(after.length,2);assert.equal(after[0].color,'#ff4e9c');assert.equal(after[1],before[1]);});

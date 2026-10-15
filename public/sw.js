@@ -1,5 +1,5 @@
 const CACHE_PREFIX='papero-journal-shell-';
-const CACHE=CACHE_PREFIX+'v2';
+const CACHE=CACHE_PREFIX+'v3';
 const SCOPE=new URL(self.registration.scope);
 self.addEventListener('install',e=>{e.waitUntil(caches.open(CACHE).then(c=>c.addAll(['./','./icon.svg','./manifest.webmanifest'])));self.skipWaiting();});
 // Only remove caches created by this app. Other projects share the github.io origin.
